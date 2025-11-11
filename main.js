@@ -10,10 +10,10 @@ chalk.trueCyan = chalk.rgb(39, 185, 232);
 function addAutoUpdateFromPackage(pkg) {
     try {
         if (!pkg.autoUpdate) throw chalk.orange("Package missing auto update");
-        if (!pkg.autoUpdate.fromVersion || !pkg.autoUpdate.githubWebhook) throw chalk.orange("Package missing version or webhook update");
+        if (!pkg.autoUpdate.fromVersion && !pkg.autoUpdate.githubWebhook) throw chalk.orange("Package missing version or webhook update");
 
         if (pkg.autoUpdate.fromVersion) {
-            
+
         }
         if (pkg.autoUpdate.githubWebhook) {
 
