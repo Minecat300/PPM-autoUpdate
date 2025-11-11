@@ -4,20 +4,34 @@ import minimist from "minimist";
 import chalk from "chalk";
 import ora from "ora";
 
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 chalk.orange = chalk.rgb(255, 81, 0)
 chalk.trueCyan = chalk.rgb(39, 185, 232);
+
+if (!fs.existsSync("./updateData.json")) {
+    fs.writeFileSync("./updateData.json", JSON.stringify({}, null, 2)); 
+}
 
 function addAutoUpdateFromPackage(pkg) {
     try {
         if (!pkg.autoUpdate) throw chalk.orange("Package missing auto update");
         if (!pkg.autoUpdate.fromVersion && !pkg.autoUpdate.githubWebhook) throw chalk.orange("Package missing version or webhook update");
 
+        const data = JSON.parse(fs.readFileSync("./updateData.json"));
+        data[pkg.name] = pkg.autoUpdate;
+
         if (pkg.autoUpdate.fromVersion) {
 
         }
         if (pkg.autoUpdate.githubWebhook) {
-
+            data[pkg.name].githubWebhook.secretPath = path.join(__dirname, "githubWebhookSecret.txt");
         }
+
+        fs.writeFileSync("./updateData.json", JSON.stringify(data, null, 2));
     } catch (err) {
         throw(err);
     }
