@@ -41,7 +41,11 @@ app.post('/', (req, res) => {
         return res.status(401).send('Invalid signature');
     }
 
-    if (branch === repoConfig.branch) {
+    const branches = Array.isArray(repoConfig.branch)
+        ? repoConfig.branch
+        : [repoConfig.branch];
+
+    if (branches.includes(branch)) {
         console.log(`Push detected on ${repoFullName} branch ${branch}`);
         req.body.commits.forEach(c => console.log(`- ${c.message}`));
 
