@@ -2,17 +2,28 @@
     "name": "ppm-auto-update",
     "version": "1.0.0",
     "description": "Adds auto update support for PPM",
-    "main": "updaterChecker.js",
+    "main": "main.js",
     "type": "module",
     "scripts": {
-        "start": "node add.js"
+        "start": "node main.js"
     },
     "keywords": [],
     "author": "Minecat",
     "license": "none",
     "installPath": "~/ppmAutoUpdate/",
     "dependencies": {
-        "minimist": "^1.2.8"
+        "minimist": "^1.2.8",
+        "chalk": "^5.6.2",
+        "ora": "^8.2.0"
+    },
+    "nginx": {
+        "service": {
+            "name": "ppmAutoUpdate",
+            "port": 53741,
+            "uri": "githubwebhook/",
+            "https": false,
+            "servers": "ask"
+        }
     },
     "pm2": {
         "name": "ppmAutoUpdate",
