@@ -16,7 +16,7 @@ if (!fs.existsSync("./updateData.json")) {
     fs.writeFileSync("./updateData.json", JSON.stringify({}, null, 2)); 
 }
 
-function addAutoUpdateFromPackage(pkg) {
+function addAutoUpdateFromPackage(pkg, dir) {
     try {
         if (!pkg.autoUpdate) throw chalk.orange("Package missing auto update");
         if (!pkg.autoUpdate.fromVersion && !pkg.autoUpdate.githubWebhook) throw chalk.orange("Package missing version or webhook update");
@@ -28,7 +28,7 @@ function addAutoUpdateFromPackage(pkg) {
 
         }
         if (pkg.autoUpdate.githubWebhook) {
-            data[pkg.name].githubWebhook.secretPath = path.join(__dirname, "githubWebhookSecret.txt");
+            data[pkg.name].githubWebhook.secretPath = path.join(dir, "githubWebhookSecret.txt");
         }
 
         fs.writeFileSync("./updateData.json", JSON.stringify(data, null, 2));
@@ -45,7 +45,7 @@ function addFromPath(dir) {
         if (!fs.existsSync(packagePath)) throw chalk.orange("package.json was not found");
         
         const pkg = JSON.parse(fs.readFileSync(packagePath));
-        addAutoUpdateFromPackage(pkg);
+        addAutoUpdateFromPackage(pkg, dir);
 
     } catch (err) {
         throw(err);
