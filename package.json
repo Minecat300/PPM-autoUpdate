@@ -1,6 +1,6 @@
 {
     "name": "ppm-auto-update",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "description": "Adds auto update support for PPM",
     "main": "main.js",
     "type": "module",

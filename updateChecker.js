@@ -56,7 +56,7 @@ app.post('/', (req, res) => {
         req.body.commits.forEach(c => console.log(`- ${c.message}`));
 
         try {
-            execSync(`sudo ppm update ${packageName}`, { stdio: 'inherit' });
+            execSync(`ppm update ${packageName}`, { stdio: 'inherit' });
         } catch(err) {
             console.error("Error updating:", err.message);
         }
