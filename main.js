@@ -12,8 +12,10 @@ const __dirname = path.dirname(__filename);
 chalk.orange = chalk.rgb(255, 81, 0)
 chalk.trueCyan = chalk.rgb(39, 185, 232);
 
-if (!fs.existsSync("./updateData.json")) {
-    fs.writeFileSync("./updateData.json", JSON.stringify({}, null, 2)); 
+const updateDataPath = path.join(__dirname, "updateData.json");
+
+if (!fs.existsSync(updateDataPath)) {
+    fs.writeFileSync(updateDataPath, JSON.stringify({}, null, 2)); 
 }
 
 function addAutoUpdateFromPackage(pkg, dir) {
@@ -21,7 +23,7 @@ function addAutoUpdateFromPackage(pkg, dir) {
         if (!pkg.autoUpdate) throw chalk.orange("Package missing auto update");
         if (!pkg.autoUpdate.fromVersion && !pkg.autoUpdate.githubWebhook) throw chalk.orange("Package missing version or webhook update");
 
-        const data = JSON.parse(fs.readFileSync("./updateData.json"));
+        const data = JSON.parse(fs.readFileSync(updateDataPath));
         data[pkg.name] = pkg.autoUpdate;
 
         if (pkg.autoUpdate.fromVersion) {
@@ -31,7 +33,7 @@ function addAutoUpdateFromPackage(pkg, dir) {
             data[pkg.name].githubWebhook.secretPath = path.join(dir, "githubWebhookSecret.txt");
         }
 
-        fs.writeFileSync("./updateData.json", JSON.stringify(data, null, 2));
+        fs.writeFileSync(updateDataPath, JSON.stringify(data, null, 2));
     } catch (err) {
         throw(err);
     }

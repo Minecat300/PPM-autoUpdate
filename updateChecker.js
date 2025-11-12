@@ -5,9 +5,15 @@ import bodyParser from 'body-parser';
 import crypto from 'crypto';
 
 import { execSync, exec } from "child_process";
+import { fileURLToPath } from 'url';
 
-if (!fs.existsSync("./updateData.json")) {
-    fs.writeFileSync("./updateData.json", JSON.stringify({}, null, 2)); 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const updateDataPath = path.join(__dirname, "updateData.json");
+
+if (!fs.existsSync(updateDataPath)) {
+    fs.writeFileSync(updateDataPath, JSON.stringify({}, null, 2)); 
 }
 
 const app = express();
@@ -24,9 +30,8 @@ app.post('/', (req, res) => {
     const repoFullName = req.body.repository.full_name;
     const branch = req.body.ref.replace('refs/heads/', '');
 
-    const packages = JSON.parse(fs.readFileSync("./updateData.json"));
+    const packages = JSON.parse(fs.readFileSync(updateDataPath));
     const packageName = Object.entries(packages).find(([topKey, nestedObj]) => nestedObj.githubWebhook?.repo === repoFullName)?.[0];
-    console.log(packageName, packages, repoFullName);
 
     if (!packageName) return res.status(200).send('Repo not tracked');
     const repoConfig = packages[packageName].githubWebhook;
