@@ -26,6 +26,7 @@ app.post('/', (req, res) => {
 
     const packages = JSON.parse(fs.readFileSync("./updateData.json"));
     const packageName = Object.entries(packages).find(([topKey, nestedObj]) => nestedObj.githubWebhook?.repo === repoFullName)?.[0];
+    console.log(packageName, packages, repoFullName);
 
     if (!packageName) return res.status(200).send('Repo not tracked');
     const repoConfig = packages[packageName].githubWebhook;
